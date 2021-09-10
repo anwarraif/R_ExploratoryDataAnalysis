@@ -6,12 +6,12 @@ The superstore industry is comprised of extensive stores that sell a typical pro
 The Analysis of such industry is of great importance as it gives insights for sales and profits of various products. My analysis is based on a superstore dataset in the world that ordered between 2015 and 2018.
 
 **Goals** :
-a. Region that accounts for greater number of orders
-b. Frequency distribution of quantity ordered
-c. Profitable category and sub-category
-d. Percentage sales by category
-e. Product type that was ordered greater times
-f. Category and sub-category that incurred the losses
+1. Region that accounts for greater number of orders
+2. Frequency distribution of quantity ordered
+3. Profitable category and sub-category
+4. Percentage sales by category
+5. Product type that was ordered greater times
+6. Category and sub-category that incurred the losses
 
 With this analysis the superstore can identify various aspects of the shopping patterns.
 
