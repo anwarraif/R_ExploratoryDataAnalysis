@@ -1,0 +1,155 @@
+---
+title: "EDA Global Superstore Data"
+author: "Kurnia Anwar Ra'if"
+date: "8/1/2021"
+output: html_document
+---
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(rlang)
+library(tidyverse)
+dfstore <-  read.csv("Data/Dataset Global Superstore.csv")
+dfstore
+```
+
+```{r}
+str(dfstore)
+summary(dfstore)
+unique(dfstore)
+view(dfstore)
+```
+
+```{r 2. Data Preparation and cleaning}
+#check null in dfstore
+is.null(dfstore)
+#check the duplicate data
+dfstore_new <- dfstore %>% distinct()
+dfstore_new
+view(dfstore_new)
+```
+
+```{r}
+maxSales <- max(dfstore_new$Sales)
+maxSales
+dfstore_new$Sales <- replace(dfstore_new$Sales, dfstore_new$Sales==maxSales,mean(dfstore_new$Sales))
+#remove country and postal code
+dfstore_new <- dfstore_new %>% select(-c(Country, Postal.Code))
+```
+```{r Split order date to month, day, year}
+dfstore_new$order<-dfstore_new$Order.Date
+library(tidyr)
+dfstore_new<-separate(dfstore_new,order,
+        c("month","day","year"),sep="/")
+dfstore_new
+```
+```{r Plotting Visualization}
+ count_Region <- table(dfstore_new$Region)
+ barplot(count_Region, main="Total Orders by Region", xlab="Region", col="Green")
+```
+
+```{r Count Region}
+count_Region
+```
+
+```{r Checking Sales Category}
+library("dplyr")
+library(magrittr)
+sales_category <- dfstore_new %>% group_by(Category) %>% summarize(Sales=sum(Sales))
+pct<-round(sales_category$Sales/sum(sales_category$Sales)*100)
+lbls<-paste(sales_category$Category,pct)
+lbls<-paste(lbls, "%", sep= " ")
+colors = c('red','green','blue')
+pie(sales_category$Sales, labels = lbls,main="% Sales By Category",col=colors)
+```
+```{r Sales vs Quantity}
+ggplot(data = dfstore_new,
+       aes(x = Quantity,
+           y = Sales,
+           fill = Ship.Mode) ) + geom_bar(stat = "identity")
+```
+```{r Visualisasi Sales vs Discount}
+ggplot() + geom_point(data = dfstore_new, 
+                      aes(x = Discount,
+                          y = Sales, 
+                          color = Ship.Mode)) 
+```
+```{r Visualization in profitable sub-category in category}
+install.packages("treemap")
+library(treemap)
+treemap(dfstore_new,index = c("Category","Sub.Category"),
+        vSize ="Sales",vColor="Profit",
+        type="value",palette="Set2",
+        range=c(-50000,250000),mapping=c(-
+        20000,10000,250000),
+        title = "Sales Treemap By categories",
+        fontsize.labels =c(15,10),align.labels =list(c("centre","centre")
+                                                     ,c("left","top")),
+        overlap.labels=0.75)
+```
+
+```{r Total Sales by Market}
+totalsales<-aggregate.data.frame(dfstore_new$Sales,
+                                 by=list(Market=dfstore_new$Market),
+                                 FUN="sum")
+names(totalsales)=c("Market","Totalsales")
+slices<-totalsales$Totalsales
+lbls<-totalsales$Market
+pct<-round(slices/sum(slices)*100)
+lbls<-paste(lbls,pct)
+lbls<-paste(lbls,"%",sep="")
+pie(slices,
+    labels=lbls,
+    col=rainbow(length(lbls)),
+    main="Total Sales by Market")
+```
+
+
+```{r Total sales by Market : boxplot}
+boxplot(Sales~Market,
+        data=dfstore_new, 
+        main="Total Sales by Market", 
+        xlab="Market",
+        ylab="Total Sales",
+        ylim=range(0,600),
+        col = c("red","light blue","red","red","light blue","light blue", "light blue"))
+```
+
+```{r profit vs discount}
+ggplot() + geom_bar(data = dfstore_new, aes(x = Discount, y = Profit, fill = Ship.Mode), stat = "stack") 
+```
+
+```{r profit vs sub.category vs region}
+ggplot() + geom_bar(data = dfstore_new, 
+                    aes(x = Sub.Category, 
+                        y = Profit, fill = Region),
+                    stat = "identity") + theme(axis.text.x = element_text(angle = 90,
+                                                                          vjust = 0.5, 
+                                                                          hjust=1))
+```
+
+```{r Sales vs category vs Region}
+ggplot() + geom_bar(data = dfstore_new, 
+                    aes(x = Category, 
+                        y = Sales, fill = Region),
+                    stat = "identity") + theme(axis.text.x = element_text(angle = 90,
+                                                                          vjust = 0.5,
+                                                                          hjust=1))
+```
+```{r profit vs category vs region}
+ggplot() + geom_bar(data = dfstore_new, 
+                    aes(x = Category,
+                        y = Profit,
+                        fill = Region), stat = "identity") + theme(axis.text.x = element_text(angle = 90, 
+                                                                                              vjust = 0.5,
+                                                                                              hjust=1))
+```
+```{r correlation matrix between sales, discount, quantity, profit}
+install.packages("corrplot")
+data_cor <- dfstore_new[, c(18,19,20,21)]
+View(data_cor)
+library(corrplot)
+data_cor = cor(data_cor)
+data_cor
+corrplot(data_cor)
+```
