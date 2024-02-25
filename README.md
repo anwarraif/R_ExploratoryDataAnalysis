@@ -34,7 +34,7 @@ With this analysis the superstore can identify various aspects of the shopping p
 4. For Tables, bookcases, and chairs under the furniture category must have more complex attention
 
 If you have any suggestions or feedback, please don't hesitate to contact to me in direct message on LinkedIn and Email :
-kurniaanwarraif@gmail.com and https://www.linkedin.com/in/kurnia-anwar-ra-if/
+kurniaanwarraif@gmail.com and https://www.linkedin.com/in/anwaraif/
 
 #R
 #EDA
