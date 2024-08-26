@@ -1,5 +1,7 @@
 
 # R_EDA_GlobalSuperStore
+
+## Project Portfolio Exploratory Data Analysis
 EDA is Exploratory and Explanatory Data Analysis. I'm using Global Super Store from Kaggle.com . Superstores industry comprises of companies that operateby having large size spaces which store and supply large amounts of goods. 
 I'm using The dataset from this link : https://www.kaggle.com/datasets/shekpaul/global-superstore
 
