@@ -41,3 +41,4 @@ kurniaanwarraif@gmail.com and https://www.linkedin.com/in/anwaraif/
 #R
 #EDA
 #GlobalSuperStore
+#data-science
